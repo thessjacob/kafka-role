@@ -18,18 +18,22 @@ The role is idempotent and running it more than once should not cause any config
 - Every host in the inventory should have a "node\_id" variable. This variable will create the
 zookeeper id on the first 3 nodes and the broker id on all nodes. 
 
-> [kafka_cluster]
-> kafka-node01.mydomain.net node_id='1'
-> kafka-node02.mydomain.net node_id='2'
-> kafka-node03.mydomain.net node_id='3'
+``` sh
+[kafka_cluster]
+kafka-node01.mydomain.net node_id='1'
+kafka-node02.mydomain.net node_id='2'
+kafka-node03.mydomain.net node_id='3'
+```
 
 ## Sample Playbook
 
-> ---
-> - hosts: kafka_cluster
->  tasks:
->    - import_role:
->        name: roles/kafka
+```sh
+ ---
+ - hosts: kafka_cluster
+  tasks:
+    - import_role:
+        name: roles/kafka
+```
 
 ## Updating files
 
@@ -45,4 +49,5 @@ MIT
 ## Author
 
 thessjacob
+
 github.com/thessjacob/kafka-role
