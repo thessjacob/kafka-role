@@ -13,6 +13,16 @@ The role is idempotent and running it more than once should not cause any config
 
 - The role does assume that a /data exists.
 
+## Requirements
+
+- tarball\_download.sh should be run once to download the java and kafka tarballs. You may wish to
+download these tarbars yourself if you wish to pick closer mirrors. It can be safely run more than once
+and easily edited with different java and kafka versions.
+- You can run it with: 
+```
+./tarball_download.sh
+```
+
 ## Inventory Variables
 
 - Every host in the inventory should have a "node\_id" variable. This variable will create the
