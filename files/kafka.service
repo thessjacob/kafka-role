@@ -1,0 +1,20 @@
+[Unit]
+Description=Kafka
+After=syslog.target network.target zookeeper.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties
+ExecStop=/usr/local/kafka/bin/kafka-server-stop.sh
+Environment=JAVA_HOME=/usr/local/java/jdk
+User=root
+Group=kafka
+WorkingDirectory=/usr/local/kafka/bin/
+KillMode=process
+Restart=on-failure
+RestartSec=90
+StartLimitBurst=3
+LimitNOFILE=8192
+
+[Install]
+WantedBy=multi-user.target

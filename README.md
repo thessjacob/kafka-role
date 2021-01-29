@@ -1,0 +1,48 @@
+# Ansible Kafka Role
+
+This is a role to install and configure a basic 1 node/3 node kafka cluster with zookeeper.
+It creates a basic configuration with few changes from the default, meaning it is useful for 
+testing and for getting started with kafka, but may not be suitable for production.
+
+The role is idempotent and running it more than once should not cause any configuation issues.
+
+## What it can do
+
+- completely install and configure a 3 node zookeeper/kafka cluster
+- add additional kafka nodes to a cluster without creating additional zookeeper nodes
+
+- The role does assume that a /data exists.
+
+## Inventory Variables
+
+- Every host in the inventory should have a "node\_id" variable. This variable will create the
+zookeeper id on the first 3 nodes and the broker id on all nodes. 
+
+> [kafka_cluster]
+> kafka-node01.mydomain.net node_id='1'
+> kafka-node02.mydomain.net node_id='2'
+> kafka-node03.mydomain.net node_id='3'
+
+## Sample Playbook
+
+> ---
+> - hosts: kafka_cluster
+>  tasks:
+>    - import_role:
+>        name: roles/kafka
+
+## Updating files
+
+Both Kafka version and Java version can be updated by downloading new tarballs and placing them in the
+files folder. The version variables should then be updated in kafka/vars/main/vars.yml. 
+
+Worth noting is that the jdk tarball should be abbreviated to just "jdk-<version #>.tgz" to keep 
+directories cleaner.
+
+## License
+MIT
+
+## Author
+
+thessjacob
+github.com/thessjacob/kafka-role

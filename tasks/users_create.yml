@@ -1,0 +1,7 @@
+---
+- name: create kafka user
+  user:
+    name: kafka
+    comment: Kafka service user
+    create_home: no
+    state: present

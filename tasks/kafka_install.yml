@@ -1,0 +1,59 @@
+---
+- name: create pkg directory
+  file:
+    path: /usr/local/pkg
+    state: directory
+
+- name: create /data/zookeeper directory
+  when: node_id == 1 or
+        node_id == 2 or
+        node_id == 3
+  file:
+    path: /data/zookeeper
+    owner: kafka
+    group: kafka
+    mode: 2755
+    state: directory
+
+- name: create and populate myid file
+  when: node_id == 1 or
+        node_id == 2 or
+        node_id == 3
+  lineinfile:
+    path: /data/zookeeper/myid
+    owner: kafka
+    group: kafka
+    create: yes
+    line: "{{ node_id }}"
+
+- name: create /data/kafka directory
+  file:
+    path: /data/kafka
+    owner: kafka
+    group: kafka
+    mode: 2755
+    state: directory
+    
+- name: copy kafka tarball and unpack it on host
+  unarchive:
+    src: "{{ kafka_version }}.tgz"
+    dest: /usr/local/pkg/
+    creates: "/usr/local/pkg/{{ kafka_version }}"
+    owner: kafka
+    group: kafka
+
+- name: create kafka simlink in /usr/local
+  file:
+    src: "/usr/local/pkg/{{ kafka_version }}"
+    dest: /usr/local/kafka
+    state: link
+
+- name: add templated server.properties file
+  template:
+    src: server.properties.j2
+    dest: /usr/local/kafka/config/server.properties
+
+- name: add templated zookeeper.properties file
+  template:
+    src: zookeeper.properties.j2
+    dest: /usr/local/kafka/config/zookeeper.properties

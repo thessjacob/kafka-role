@@ -1,0 +1,22 @@
+# Customized jinja2 template for basic deploymnent of 3 node kafka/zookeeper cluster
+###############################
+###############################
+# the directory where the snapshot is stored.
+dataDir=/data/zookeeper
+# the port at which the clients will connect
+clientPort=2181
+# disable the per-ip limit on the number of connections since this is a non-production config
+maxClientCnxns=60
+# Disable the adminserver by default to avoid port conflicts.
+# Set the port to something non-conflicting if choosing to enable this
+admin.enableServer=false
+# admin.serverPort=8080
+# list of zookeeper nodes (1 to 1 with kafka nodes in 3 node topology)
+{% for host in groups['kafka_cluster'] %}
+{% if hostvars[host].node_id == 1 or hostvars[host].node_id == 2 or hostvars[host].node_id == 3 %}
+server.{{ hostvars[host].node_id }}={{ hostvars[host].inventory_hostname}}:2888:3888
+{% endif %}
+{% endfor %}
+
+initLimit=5
+syncLimit=3

@@ -1,0 +1,23 @@
+---
+- name: add kafka.service systemd unit
+  copy:
+    src: kafka.service
+    dest: /etc/systemd/system/kafka.service
+
+- name: add zookeeper.service systemd unit
+  copy:
+    src: zookeeper.service
+    dest: /etc/systemd/system/zookeeper.service
+
+- name: reload systemd-daemon
+  systemd:
+    daemon_reload: yes 
+
+- name: start the zookeeper and kafka services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - zookeeper.service
+    - kafka.service

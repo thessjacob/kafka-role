@@ -1,0 +1,17 @@
+---
+
+- name: create kafka user
+  include_tasks: users_create.yml
+  tags: ['install', 'users']
+
+- name: copy kafka tarball and unpack it on host
+  include_tasks: kafka_install.yml
+  tags: ['install', 'unpack', 'kafka']
+
+- name: copy java tarball and unpack it on host
+  include_tasks: java_install.yml
+  tags: ['install', 'unpack', 'java']
+
+- name: create the systemd services
+  include_tasks: systemd_services.yml
+  tags: ['install', 'services']

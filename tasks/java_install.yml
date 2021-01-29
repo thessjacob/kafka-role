@@ -1,0 +1,36 @@
+---
+- name: create jdk directory
+  file:
+    path: /usr/local/java
+    state: directory
+    seuser: system_u
+
+- name: create java_version directory
+  file:
+    path: "/usr/local/java/{{ java_version }}"
+    state: directory
+    seuser: system_u
+
+- name: copy the tarball to the server
+  copy:
+    src: "{{ java_version }}.tgz"
+    dest: "/usr/local/java/{{ java_version }}.tgz"
+
+- name: unarchive java jdk
+  unarchive:
+    src: "/usr/local/java/{{ java_version }}.tgz"
+    remote_src: yes
+    dest: "/usr/local/java/{{ java_version }}"
+    extra_opts: [--strip-components=1]
+
+- name: create the jdk simlink
+  file:
+    src: "/usr/local/java/{{ java_version }}"
+    dest: /usr/local/java/jdk
+    state: link
+
+- name: add java.sh to profile.d
+  copy:
+    src: java.sh
+    dest: /etc/profile.d/java.sh
+    mode: 0644
