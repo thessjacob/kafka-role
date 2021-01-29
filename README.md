@@ -16,7 +16,7 @@ The role is idempotent and running it more than once should not cause any config
 ## Requirements
 
 - tarball\_download.sh should be run once to download the java and kafka tarballs. You may wish to
-download these tarbars yourself if you wish to pick closer mirrors. It can be safely run more than once
+download these tarballs yourself if you wish to pick closer mirrors. It can be safely run more than once
 and easily edited with different java and kafka versions.
 - You can run it with: 
 ```
@@ -42,7 +42,7 @@ kafka-node03.mydomain.net node_id='3'
  - hosts: kafka_cluster
   tasks:
     - import_role:
-        name: roles/kafka
+        name: roles/kafka-role
 ```
 
 ## Updating files
@@ -50,7 +50,7 @@ kafka-node03.mydomain.net node_id='3'
 Both Kafka version and Java version can be updated by downloading new tarballs and placing them in the
 files folder. The version variables should then be updated in kafka/vars/main/vars.yml. 
 
-Worth noting is that the jdk tarball should be abbreviated to just "jdk-<version #>.tgz" to keep 
+Worth noting is that the jdk tarball should be abbreviated to just "openjdk-<version #>.tgz" to keep 
 directories cleaner.
 
 ## License
